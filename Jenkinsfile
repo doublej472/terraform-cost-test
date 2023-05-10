@@ -17,7 +17,7 @@ node {
 			}
 			stage('Infracost Breakdown') {
 				unstash name: 'tfplan'
-				sh "infracost breakdown --path plan.json --out-file infracost.json"
+				sh "infracost breakdown --path plan.json --format json --out-file infracost.json"
 				stash includes: 'infracost.json', name: 'infracost'
 				archiveArtifacts artifacts: 'infracost.json', fingerprint: true
 			}
