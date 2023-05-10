@@ -8,6 +8,7 @@ node {
 			string(credentialsId: 'INFRACOST_API_KEY', variable: 'INFRACOST_API_KEY'),
 			string(credentialsId: 'GH_PAT', variable: 'GH_PAT')
 		]) {
+			checkout scm
 			stage('Plan') {
 				sh "terraform init"
 				sh "terraform plan -out plan.tfplan"
@@ -18,6 +19,7 @@ node {
 				unstash name: 'tfplan'
 				sh "infracost breakdown --path plan.json --out-file infracost.json"
 				stash includes: 'infracost.json', name: 'infracost'
+				archiveArtifacts artifacts: 'infracost.json', fingerprint: true
 			}
 			if (env.CHANGE_ID) {
 				stage('Infracost PR Comment') {
