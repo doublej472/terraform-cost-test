@@ -7,24 +7,18 @@ node {
 		TF_CLI_ARGS="-no-color"
 	}
 	stage('Plan') {
-		steps {
-			sh "terraform init"
-			sh "terraform plan -out plan.tfplan"
-			sh "terraform show -json plan.tfplan > plan.json"
-			stash includes: 'output.json', name: 'tfplan'
-		}
+		sh "terraform init"
+		sh "terraform plan -out plan.tfplan"
+		sh "terraform show -json plan.tfplan > plan.json"
+		stash includes: 'output.json', name: 'tfplan'
 	}
 	stage('Infracost Breakdown') {
-		steps {
-			unstash name: 'tfplan'
-			sh "infracost breakdown --path plan.json"
-		}
+		unstash name: 'tfplan'
+		sh "infracost breakdown --path plan.json"
 	}
 	if (env.CHANGE_ID) {
 		stage('Infracost PR Comment') {
-			steps {
-				sh "infracost comment github --path=infracost.json --repo=https://github.com/doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
-			}
+			sh "infracost comment github --path=infracost.json --repo=https://github.com/doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
 		}
 	}
 }
