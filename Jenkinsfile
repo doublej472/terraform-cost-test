@@ -4,7 +4,7 @@ node {
         	"AWS_SECRET_ACCESS_KEY=credentials('AWS_SECRET_ACCESS_KEY')",
 		"INFRACOST_API_KEY=credentials('INFRACOST_API_KEY')",
 		"GH_PAT=credentials('GH_PAT')",
-		"TF_CLI_ARGS="-no-color",
+		"TF_CLI_ARGS=-no-color",
 	]) {
 		stage('Plan') {
 			sh "terraform init"
