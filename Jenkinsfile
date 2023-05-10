@@ -12,14 +12,16 @@ node {
 				sh "terraform init"
 				sh "terraform plan -out plan.tfplan"
 				sh "terraform show -json plan.tfplan > plan.json"
-				stash includes: 'output.json', name: 'tfplan'
+				stash includes: 'plan.json', name: 'tfplan'
 			}
 			stage('Infracost Breakdown') {
 				unstash name: 'tfplan'
-				sh "infracost breakdown --path plan.json"
+				sh "infracost breakdown --path plan.json --out-file infracost.json"
+				stash includes: 'infracost.json', name: 'infracost'
 			}
 			if (env.CHANGE_ID) {
 				stage('Infracost PR Comment') {
+					unstash name: 'infracost'
 					sh "infracost comment github --path=infracost.json --repo=https://github.com/doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
 				}
 			}
