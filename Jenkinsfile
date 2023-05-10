@@ -25,8 +25,8 @@ pipeline {
 			}
 		}
 		stage('Infracost PR Comment') {
-			if (env.CHANGE_ID) {
-				steps {
+			steps {
+				if (env.CHANGE_ID) {
 					sh "infracost comment github --path=infracost.json --repo=https://github.com/doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
 				}
 			}
