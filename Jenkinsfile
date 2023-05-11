@@ -19,6 +19,7 @@ node {
 				unstash name: 'tfplan'
 				sh "infracost breakdown --sync-usage-file --usage-file infracost-usage.yml --path plan.json --format json --out-file infracost.json"
 				sh "infracost output --path infracost.json --format html --out-file infracost.html"
+				sh "infracost output --path infracost.json --format table"
 				stash includes: 'infracost.json', name: 'infracost'
 				archiveArtifacts artifacts: 'infracost.json, infracost.html, infracost-usage.yml', fingerprint: true
 			}
