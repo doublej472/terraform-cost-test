@@ -30,4 +30,4 @@ resource_usage:
     # monthly_hrs: 730.0 # Monthly number of hours the instance ran for.
   aws_lambda_function.test_lambda:
     monthly_requests: 5000000 # Monthly requests to the Lambda function.
-    request_duration_ms: 1500 # Average duration of each request in milliseconds.
+    request_duration_ms: 15000 # Average duration of each request in milliseconds.
