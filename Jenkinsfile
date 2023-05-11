@@ -25,7 +25,7 @@ node {
 			if (env.CHANGE_ID) {
 				stage('Infracost PR Comment') {
 					unstash name: 'infracost'
-					sh "infracost comment github --path=infracost.json --repo=doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
+					sh 'infracost comment github --path=infracost.json --repo=doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update'
 				}
 			}
 		}
