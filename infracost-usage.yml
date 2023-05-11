@@ -1,7 +1,0 @@
-version: 0.1
-resource_usage:
-  aws_instance.jfred-jenkins-vm:
-    operating_system: linux
-  aws_lambda_function.test_lambda:
-    monthly_requests: 50000
-    request_duration_ms: 5000
