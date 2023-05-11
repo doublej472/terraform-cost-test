@@ -18,8 +18,9 @@ node {
 			stage('Infracost Breakdown') {
 				unstash name: 'tfplan'
 				sh "infracost breakdown --path plan.json --format json --out-file infracost.json"
+				sh "infracost output --path infracost.json --format html --out-file infracost.html"
 				stash includes: 'infracost.json', name: 'infracost'
-				archiveArtifacts artifacts: 'infracost.json', fingerprint: true
+				archiveArtifacts artifacts: 'infracost.json, infracost.html', fingerprint: true
 			}
 			if (env.CHANGE_ID) {
 				stage('Infracost PR Comment') {
