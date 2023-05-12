@@ -2,7 +2,7 @@ node {
 	checkout scmGit(extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'repo']], userRemoteConfigs: scm.userRemoteConfigs)
 
 	if (env.CHANGE_ID) {
-		checkout scmGit(branches: [[name: '*/master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'base-repo']], userRemoteConfigs: [[credentialsId: scm.userRemoteConfigs[0].credentialsId, refspec: ' +refs/heads/master:refs/remotes/origin/master', url: scm.userRemoteConfigs[0].url]])
+		checkout scmGit(branches: [[name: 'refs/heads/master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'base-repo']], userRemoteConfigs: [[credentialsId: scm.userRemoteConfigs[0].credentialsId, refspec: ' +refs/heads/master:refs/remotes/origin/master', url: scm.userRemoteConfigs[0].url]])
 	}
     
 	withEnv([
