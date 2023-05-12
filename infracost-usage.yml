@@ -29,5 +29,5 @@ resource_usage:
     # vcpu_count: 0 # Number of the vCPUs for the instance type. Only applicable with t2, t3 & t4 Instance types. T2 requires credit_specification to be unlimited.
     # monthly_hrs: 730.0 # Monthly number of hours the instance ran for.
   aws_lambda_function.test_lambda:
-    monthly_requests: 500000 # Monthly requests to the Lambda function.
-    request_duration_ms: 1500 # Average duration of each request in milliseconds.
+    monthly_requests: 50000000 # Monthly requests to the Lambda function.
+    request_duration_ms: 5000 # Average duration of each request in milliseconds.
