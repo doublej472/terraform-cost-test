@@ -1,8 +1,6 @@
 node {
-	
-
 	if (env.CHANGE_ID) {
-		checkout scmGit(branches: [[name: "refs/pull/${env.CHANGE_ID}/head"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'repo']], userRemoteConfigs: scm.userRemoteConfigs)
+		checkout scmGit(branches: [[name: "${env.GIT_COMMIT}"]], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'repo']], userRemoteConfigs: scm.userRemoteConfigs)
 		checkout scmGit(branches: [[name: 'refs/heads/master']], extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'base-repo']], userRemoteConfigs: [[credentialsId: scm.userRemoteConfigs[0].credentialsId, refspec: ' +refs/heads/master:refs/remotes/origin/master', url: scm.userRemoteConfigs[0].url]])
 	} else {
 		checkout scmGit(extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'repo']], userRemoteConfigs: scm.userRemoteConfigs)
