@@ -8,6 +8,7 @@ node {
 			string(credentialsId: 'INFRACOST_API_KEY', variable: 'INFRACOST_API_KEY'),
 			string(credentialsId: 'GH_PAT', variable: 'GH_PAT')
 		]) {
+			checkout scm
 			stage('Plan') {
 				sh "terraform init"
 				sh "terraform plan -out plan.tfplan"
@@ -16,13 +17,16 @@ node {
 			}
 			stage('Infracost Breakdown') {
 				unstash name: 'tfplan'
-				sh "infracost breakdown --path plan.json --out-file infracost.json"
+				sh "infracost breakdown --usage-file infracost-usage.yml --path plan.json --format json --out-file infracost.json"
+				sh "infracost output --path infracost.json --format html --out-file infracost.html"
+				sh "infracost output --path infracost.json --format table"
 				stash includes: 'infracost.json', name: 'infracost'
+				archiveArtifacts artifacts: 'infracost.json, infracost.html, infracost-usage.yml', fingerprint: true
 			}
 			if (env.CHANGE_ID) {
 				stage('Infracost PR Comment') {
 					unstash name: 'infracost'
-					sh "infracost comment github --path=infracost.json --repo=https://github.com/doublej472/terraform-cost-test --pull-request=${env.CHANGE_ID} --github-token=${GH_PAT} --behavior=update"
+					sh 'infracost comment github --path=infracost.json --repo=doublej472/terraform-cost-test --pull-request=${CHANGE_ID} --github-token=${GH_PAT} --behavior=update'
 				}
 			}
 		}
